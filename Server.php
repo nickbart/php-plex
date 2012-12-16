@@ -44,7 +44,7 @@ class Plex_Server extends Plex_MachineAbstract
 	 * The Plex HTTP API endpoint for client listing.
 	 */
 	const ENDPOINT_CLIENT = 'clients';
-	
+
 	/**
 	 * Sets up our Plex server using the minimum amount of data required to
 	 * interact.
@@ -109,7 +109,26 @@ class Plex_Server extends Plex_MachineAbstract
 		
 		return $clients;
 	}
-
+	
+	/**
+	 * Returns the Plex library belonging to the instantiatied Plex server.
+	 *
+	 * @uses Plex_MachineAbstract::$name
+	 * @uses Plex_MachineAbstract::$address
+	 * @uses Plex_MachineAbstract::$port
+	 *
+	 * @return Plex_Server_Library The Plex library belonging to the
+	 * instantiated Plex server.
+	 */
+	public function getLibrary()
+	{
+		return new Plex_Server_Library(
+			$this->name,
+			$this->address,
+			$this->port
+		);
+	}
+	
 	/**
 	 * Returns the Plex server's name.
 	 *

@@ -4,13 +4,13 @@ php-plex
 A simple PHP library for interacting with the Plex (http://plexapp.com) HTTP API.
 
 Requirements
-============
+------------
 
-php-curl
+php-curl  
 simpleXML
 
 Examples
-========
+--------
 
 	$servers = array(
 		'shepherd' => array(

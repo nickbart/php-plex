@@ -86,12 +86,12 @@ abstract class Plex_MachineAbstract implements Plex_MachineInterface
 	 *
 	 * @return array An associated array of XML attributes.
 	 */
-	protected function xmlAttributesToArray($xmlNodes)
+	protected function xmlAttributesToArray($xml)
 	{
 		$array = array();
 		$i= 0;;
-		foreach($xmlNodes as $xmlNode) {
-			foreach($xmlNode->attributes() as $key => $value) {
+		foreach($xml as $node) {
+			foreach($node->attributes() as $key => $value) {
 				// For abstraction, everything is casted to string. It is the
 				// responsibility of the calling method to handle typing.
 				$array[$i][$key] = (string) $value[0];
@@ -120,7 +120,9 @@ abstract class Plex_MachineAbstract implements Plex_MachineInterface
 		$response = curl_exec($ch);
 		
 		curl_close($ch);
-
-		return simplexml_load_string($response);
+		
+		$xml = simplexml_load_string($response);
+		
+		return $this->xmlAttributesToArray($xml);
 	}
 }

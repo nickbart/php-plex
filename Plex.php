@@ -31,6 +31,13 @@ $phpPlexDir = dirname(__FILE__);
 require_once(sprintf('%s/Machine/MachineInterface.php', $phpPlexDir));
 require_once(sprintf('%s/Machine/MachineAbstract.php', $phpPlexDir));
 require_once(sprintf('%s/Server.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/Section.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/Item/ItemInterface.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/Item.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/Item/Movie.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/Item/Show.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/Item/Episode.php', $phpPlexDir));
 require_once(sprintf('%s/Client.php', $phpPlexDir));
 
 /**

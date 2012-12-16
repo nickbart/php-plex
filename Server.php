@@ -91,11 +91,9 @@ class Plex_Server extends Plex_MachineAbstract
 		);
 		
 		$clients = array();
+		$clientArray = $this->makeCall($url);
 		
-		$xml = $this->makeCall($url);
-		$attributes = $this->xmlAttributesToArray($xml->Server);
-		
-		foreach ($attributes as $attribute) {
+		foreach ($clientArray as $attribute) {
 			$client = new Plex_Client(
 				$attribute['name'],
 				$attribute['address'],

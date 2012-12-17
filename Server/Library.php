@@ -103,7 +103,7 @@ class Plex_Server_Library extends Plex_Server
 	}
 	
 	/**
-	 * Generic way of requestion Plex library items.
+	 * Generic way of requesting Plex library items.
 	 *
 	 * @uses Plex_MachineAbstract::makeCall()
 	 * @uses Plex_Server_Library::buildUrl()

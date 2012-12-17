@@ -107,7 +107,7 @@ class Plex_Server_Library extends Plex_Server
 	 *
 	 * @uses Plex_MachineAbstract::makeCall()
 	 * @uses Plex_Server_Library::buildUrl()
-	 * @uses Plex_Server_Library_Item::factory()
+	 * @uses Plex_Server_Library_ItemAbstract::factory()
 	 * @uses Plex_Server_Library_ItemInterface::setAttributes()
 	 *
 	 * return Plex_Server_Library_Item[] An array of plex library items.
@@ -118,11 +118,12 @@ class Plex_Server_Library extends Plex_Server
 		$itemArray = $this->makeCall($this->buildUrl($endpoint));
 		
 		foreach ($itemArray as $attribute) {
-			$item = Plex_Server_Library_Item::factory($attribute['type']);
+			$item = Plex_Server_Library_ItemAbstract::factory(
+				$attribute['type']
+			);
 			$item->setAttributes($attribute);
 			$items[] = $item;
 		}
-		
 		return $items;
 	}
 	
@@ -133,12 +134,11 @@ class Plex_Server_Library extends Plex_Server
 	 * @uses Plex_MachineAbstract::$name
 	 * @uses Plex_MachineAbstract::$address
 	 * @uses Plex_MachineAbstract::$port
-	 * @uses Plex_MachineAbstract::getBaseUrl()
 	 * @uses Plex_MachineAbstract::makeCall()
-	 * @uses Plex_MachineAbstract::xmlAttributesToArray()
-	 * @uses Plex_Server_Library::ENDPOINT_LIBRARY
 	 * @uses Plex_Server_Library::ENDPOINT_SECTION
-	 * @uses Plex_Server_Library_Section::setAttributes()
+	 * @uses Plex_Server_Library::buildUrl()
+	 * @uses Plex_Server_Library_SectionAbstract::factory()
+	 * @uses Plex_Server_Library_SectionAbstract::setAttributes()
 	 *
 	 * @return Plex_Server_Library_Section[] An array of user defined Plex
 	 * library sections.
@@ -151,7 +151,8 @@ class Plex_Server_Library extends Plex_Server
 		);
 		
 		foreach ($sectionArray as $attribute) {
-			$section = new Plex_Server_Library_Section(
+			$section = Plex_Server_Library_SectionAbstract::factory(
+				$attribute['type'],
 				$this->name,
 				$this->address,
 				$this->port

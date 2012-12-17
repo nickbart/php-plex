@@ -32,12 +32,22 @@ require_once(sprintf('%s/Machine/MachineInterface.php', $phpPlexDir));
 require_once(sprintf('%s/Machine/MachineAbstract.php', $phpPlexDir));
 require_once(sprintf('%s/Server.php', $phpPlexDir));
 require_once(sprintf('%s/Server/Library.php', $phpPlexDir));
-require_once(sprintf('%s/Server/Library/Section.php', $phpPlexDir));
-require_once(sprintf('%s/Server/Library/Item/ItemInterface.php', $phpPlexDir));
-require_once(sprintf('%s/Server/Library/Item.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/SectionAbstract.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/Section/Movie.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/Section/Show.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/Section/Artist.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/Section/Photo.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/ItemInterface.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/ItemAbstract.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/ItemGrandparentAbstract.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/ItemParentAbstract.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/ItemChildAbstract.php', $phpPlexDir));
 require_once(sprintf('%s/Server/Library/Item/Movie.php', $phpPlexDir));
 require_once(sprintf('%s/Server/Library/Item/Show.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/Item/Season.php', $phpPlexDir));
 require_once(sprintf('%s/Server/Library/Item/Episode.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/Item/Artist.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/Item/Album.php', $phpPlexDir));
 require_once(sprintf('%s/Client.php', $phpPlexDir));
 
 /**

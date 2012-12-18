@@ -139,7 +139,7 @@ class Plex_Server_Library_Section_Artist
 	 * Returns all the artists contained in a given collection.
 	 *
 	 * @param integer $collectionKey Key that represents the collection by which
-	 * the  artists will be retrieved. The genre key can be discovered by using
+	 * the artists will be retrieved. The genre key can be discovered by using
 	 * the getGenres() method from the parent class.
 	 * 
 	 * @uses Plex_Server_Library_SectionAbstract::getItemsByCollection()

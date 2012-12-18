@@ -1,11 +1,7 @@
 <?php
 
 /**
- * Season
- * Album
- */
-/**
- * Plex Library Grandparent Item
+ * Plex Library Parent Item
  * 
  * @category php-plex
  * @package Plex_Server
@@ -29,9 +25,9 @@
  */
 
 /**
- * Base class that represents a Plex library item at the top of the hierarchy.
- * This includes items such as shows and artists. The methods and members,
- * however, are still inherited by parent and child items.
+ * Base class that represents a Plex library item in the middle of the 
+ * hierarchy. This includes items such as seasons and albums. The methods and 
+ * members, however, are still inherited by the child items.
  * 
  * @category php-plex
  * @package Plex_Server

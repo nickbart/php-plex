@@ -52,7 +52,7 @@ abstract class Plex_Server_Library_ItemAbstract
 	protected $librarySectionId;
 	
 	/**
-	 * TODO Figure out what the rating key is.
+	 * Unique integer that represents an item and helps build its key string.
 	 * @var integer
 	 */
 	protected $ratingKey;

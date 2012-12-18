@@ -485,7 +485,7 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 	}
 	
 	/**
-	 * Static factory method used to instantiated child section classes by their
+	 * Static factory method used to instantiate child section classes by their
 	 * type.
 	 *
 	 * @param string $type The type of child section class being instantiated.
@@ -493,7 +493,7 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 	 * @param string $address The IP address of the Plex server.
 	 * @param integer $port The port on which the Plex server is listening.
 	 *
-	 * @return Plex_Server_LibrarySectionAbstract An instantiated section child
+	 * @return Plex_Server_Library_SectionAbstract An instantiated section child
 	 * class.
 	 */
 	public static final function factory($type, $name, $address, $port)

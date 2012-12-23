@@ -269,4 +269,27 @@ class Plex_Server_Library_Section_Show
 			)
 		);
 	}
+
+	/**
+	 * Searches episode titles for the passed query and returns the episodes 
+	 * that match.
+	 *
+	 * @param string $query The search term against which the episodes will be
+	 * matched.
+	 *
+	 * @uses Plex_Server_Library::getItems()
+	 * @uses Plex_Server_Library_SectionAbstract::buildSearchEndpoint()
+	 * @uses Plex_Server_Library_SectionAbstract::SEARCH_TYPE_EPISODE
+	 *
+	 * @return Plex_Server_Library_Item_Episode[] An array of episode objects.
+	 */
+	public function searchEpisodes($query)
+	{
+		return $this->getItems(
+			$this->buildSearchEndpoint(
+				Plex_Server_Library_SectionAbstract::SEARCH_TYPE_EPISODE,
+				$query
+			)
+		);
+	}
 }

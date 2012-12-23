@@ -106,12 +106,12 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 	protected $createdAt;
 	
 	/**
-	 * Endpoint for retrieiving all items for a section.
+	 * Endpoint for retrieving all items for a section.
 	 */
 	const ENDPOINT_CATEGORY_ALL = 'all';
 	
 	/**
-	 * Endpoint for retrieiving all unwatched items for a section.
+	 * Endpoint for retrieving all unwatched items for a section.
 	 */
 	const ENDPOINT_CATEGORY_UNWATCHED = 'unwatched';
 	
@@ -151,9 +151,39 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 	const ENDPOINT_CATEGORY_GENRE = 'genre';
 	
 	/**
-	 * Endpoint for retrieiving items for a sectoin by year.
+	 * Endpoint for retrieiving items for a section by year.
 	 */
 	const ENDPOINT_CATEGORY_YEAR = 'year';
+	
+	/**
+	 * Endpoing for searching a section for items.
+	 */
+	const ENDPOINT_SEARCH = 'search';
+	
+	/**
+	 * Parameter for searching movies.
+	 */
+	const SEARCH_TYPE_MOVIE = 1;
+
+	/**
+	 * Parameter for searching television shows.
+	 */
+	const SEARCH_TYPE_SHOW = 2;
+	
+	/**
+	 * Parameter for searching teleivision episodes.
+	 */
+	const SEARCH_TYPE_EPISODE = 4;
+
+	/**
+	 * Parameter for searching artists.
+	 */
+	const SEARCH_TYPE_ARTIST = 8;
+
+	/**
+	 * Parameter for searching tracks.
+	 */
+	const SEARCH_TYPE_TRACK = 10;
 	
 	/**
 	 * Adds the attributes to the object if they exist.
@@ -220,7 +250,7 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 	 * @uses Plex_Server_Library::ENDPOINT_SECTION
 	 * @uses Plex_Server_Library_SectionAbstract::getKey()
 	 *
-	 * @return void
+	 * @return string The requested endpoint.
 	 */
 	protected function buildEndpoint($endpoint)
 	{
@@ -230,6 +260,30 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 			$this->getKey(),
 			$endpoint
 		);
+	}
+	
+	/**
+	 * Builds an endpoint to search a Plex library section.
+	 *
+	 * @param integer $type The type of item to be searched.
+	 * @param string $query The string of text against which the search will be
+	 * run.
+	 *
+	 * @uses Plex_Server_Library_SectionAbstract::ENDPOINT_SEARCH
+	 * @uses Plex_Server_Library_SectionAbstract::buildEndpoint()
+	 *
+	 * @return string The requested search endpoint.
+	 */
+	protected function buildSearchEndpoint($type, $query)
+	{
+		$endpoint = sprintf(
+			'%s?type=%d&query=%s',
+			self::ENDPOINT_SEARCH,
+			$type,
+			trim($query)
+		);
+		
+		return $this->buildEndpoint($endpoint);
 	}
 	
 	/**

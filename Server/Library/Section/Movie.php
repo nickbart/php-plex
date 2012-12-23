@@ -411,4 +411,27 @@ class Plex_Server_Library_Section_Movie
 			)
 		);
 	}
+	
+	/**
+	 * Searches moview titles for the passed query and returns the movies that
+	 * match.
+	 *
+	 * @param string $query The search term against which the movies will be
+	 * matched.
+	 *
+	 * @uses Plex_Server_Library::getItems()
+	 * @uses Plex_Server_Library_SectionAbstract::buildSearchEndpoint()
+	 * @uses Plex_Server_Library_SectionAbstract::SEARCH_TYPE_MOVIE
+	 *
+	 * @return Plex_Server_Library_Item_Movie[] An array of movie objects.
+	 */
+	public function searchMovies($query)
+	{
+		return $this->getItems(
+			$this->buildSearchEndpoint(
+				Plex_Server_Library_SectionAbstract::SEARCH_TYPE_MOVIE,
+				$query
+			)
+		);
+	}
 }

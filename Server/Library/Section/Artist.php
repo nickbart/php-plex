@@ -162,4 +162,50 @@ class Plex_Server_Library_Section_Artist
 	{
 		return $this->getRecentlyAddedSectionItems();
 	}
+	
+	/**
+	 * Searches artist titles for the passed query and returns the artists that
+	 * match.
+	 *
+	 * @param string $query The search term against which the artists will be
+	 * matched.
+	 *
+	 * @uses Plex_Server_Library::getItems()
+	 * @uses Plex_Server_Library_SectionAbstract::buildSearchEndpoint()
+	 * @uses Plex_Server_Library_SectionAbstract::SEARCH_TYPE_ARTIST
+	 *
+	 * @return Plex_Server_Library_Item_Artist[] An array of artist objects.
+	 */
+	public function searchArtists($query)
+	{
+		return $this->getItems(
+			$this->buildSearchEndpoint(
+				Plex_Server_Library_SectionAbstract::SEARCH_TYPE_ARTIST,
+				$query
+			)
+		);
+	}
+
+	/**
+	 * Searches track titles for the passed query and returns the tracks that
+	 * match.
+	 *
+	 * @param string $query The search term against which the tracks will be
+	 * matched.
+	 *
+	 * @uses Plex_Server_Library::getItems()
+	 * @uses Plex_Server_Library_SectionAbstract::buildSearchEndpoint()
+	 * @uses Plex_Server_Library_SectionAbstract::SEARCH_TYPE_TRACK
+	 *
+	 * @return Plex_Server_Library_Item_Track[] An array of track objects.
+	 */
+	public function searchTracks($query)
+	{
+		return $this->getItems(
+			$this->buildSearchEndpoint(
+				Plex_Server_Library_SectionAbstract::SEARCH_TYPE_TRACK,
+				$query
+			)
+		);
+	}
 }

@@ -48,6 +48,7 @@ require_once(sprintf('%s/Server/Library/Item/Season.php', $phpPlexDir));
 require_once(sprintf('%s/Server/Library/Item/Episode.php', $phpPlexDir));
 require_once(sprintf('%s/Server/Library/Item/Artist.php', $phpPlexDir));
 require_once(sprintf('%s/Server/Library/Item/Album.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/Item/Track.php', $phpPlexDir));
 require_once(sprintf('%s/Client.php', $phpPlexDir));
 
 /**

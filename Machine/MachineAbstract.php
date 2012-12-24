@@ -125,4 +125,21 @@ abstract class Plex_MachineAbstract implements Plex_MachineInterface
 		
 		return $this->xmlAttributesToArray($xml);
 	}
+	
+	/**
+	 * Universal function so any method belonging to a child class of a Plex
+	 * machine can discover which fucntion called it. This is used mainly for
+	 * some of our polymorphic requests as the calling function can tell us what
+	 * type of item is being requested.
+	 *
+	 * @return string The name of the function that called the function that
+	 * issued the getCallingFunction request.
+	 */
+	protected function getCallingFunction()
+	{
+		$backtrace = debug_backtrace();
+		// Index will always be 2 because 0 is this function and 1 will be the
+		// function that asked for the calling function.
+		return $backtrace[2]['function'];
+	}
 }

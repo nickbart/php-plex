@@ -1,4 +1,4 @@
-0;95;c<?php
+<?php
 
 /**
  * Plex Server Library Section

@@ -1,4 +1,4 @@
-<?php
+0;95;c<?php
 
 /**
  * Plex Server Library Section
@@ -496,6 +496,81 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 		);
 	}
 	
+	/**
+	 * A generic method to allow polymorphic retrieval of a single library item.
+	 * This will take a rating key, a key, or a string that it will use to
+	 * attempt an exact title match.
+	 *
+	 * @param integer|string $polymorphicData Either a rating key, a key, or a
+	 * title for an exact title match that will be used to retrieve a single
+	 * library item.
+	 *
+	 * @uses Plex_MachineAbstract::getCallingFunction()
+	 * @uses Plex_Server_Library::getItems()
+	 * @uses Plex_Server_Library::functionToType()
+	 * @uses Plex_Server_Library::ENDPOINT_METADATA
+	 * @uses Plex_Server_Library::ENDPOINT_LIBRARY
+	 * @uses Plex_Server_Library_ItemAbstract::getTitle()
+	 *
+	 * @return Plex_Server_Library_ItemAbstract The request Plex library item.
+	 */
+	protected function getPolymorphicItem($polymorphicData)
+	{
+		if (is_int($polymorphicData)) {
+			// If we have an integer then we can assume we have a rating key.
+			return reset(
+				$this->getItems(
+					sprintf(
+						'%s/%d',
+						Plex_Server_Library::ENDPOINT_METADATA,
+						$polymorphicData
+					)
+				)
+			);
+		} else if (strpos($polymorphicData, Plex_Server_Library::ENDPOINT_METADATA)
+			!= FALSE) {
+			// If the single item endpoint appears in the polymorphic data then
+			// is assumed we are dealing with a key, which is already a valid
+			// endpoint.
+			
+			// A key will contain the library endpoint, which will be added back
+			// by our getItems method, so we strip it out here. The buildUrl
+			// method will handle stripping out and double slashes caused by
+			// this.
+			$endpoint = str_replace(
+				Plex_Server_Library::ENDPOINT_LIBRARY, 
+				'',
+				$polymorphicData
+			);
+			
+			return reset($this->getItems($endpoint));
+		} else {
+			
+			// If we don't have a rating key or a key then we just assume we're
+			// doing an exact title match.
+			
+			// Find the item type.
+			$itemType =  $this->functionToType(
+				$this->getCallingFunction()
+			);
+			
+			// Find the search method and make sure it exists in the search
+			// class.
+			$searchMethod = sprintf('search%ss', ucfirst($itemType));
+			
+			if (method_exists($this, $searchMethod)) {
+				foreach ($this->{$searchMethod}($polymorphicData) as $item) {
+					if ($item->getTitle() === $polymorphicData) {
+						return $item;
+					}
+				}
+			}
+			
+			// Tried to do an exact title match and came up empty.
+			return FALSE;
+		}
+	}
+		
 	/**
 	 * Returns a list of collections for the child class's section. We use
 	 * makeCall directly here, because we want to return just the raw array of

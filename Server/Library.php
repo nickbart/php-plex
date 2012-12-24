@@ -54,9 +54,14 @@ class Plex_Server_Library extends Plex_Server
 	const ENDPOINT_RECENTLY_ADDED = 'recentlyAdded';
 	
 	/**
-	 * URLl endpoint for a library's on deck items.
+	 * URL endpoint for a library's on deck items.
 	 */
 	const ENDPOINT_ON_DECK = 'onDeck';
+
+	/**
+	 * URL endpoint for single library items.
+	 */
+	const ENDPOINT_METADATA = 'metadata';
 	
 	/**
 	 * String that identifies a Plex library movie item type.
@@ -69,6 +74,16 @@ class Plex_Server_Library extends Plex_Server
 	const TYPE_ARTIST = 'artist';
 	
 	/**
+	 * String that identifies a Plex library album item type.
+	 */
+	const TYPE_ALBUM = 'album';
+	
+	/**
+	 * String that identifies a Plex library track item type.
+	 */
+	const TYPE_TRACK = 'track';
+	
+	/**
 	 * String that identifies a Plex library photo item type.
 	 */
 	const TYPE_PHOTO = 'photo';
@@ -77,6 +92,11 @@ class Plex_Server_Library extends Plex_Server
 	 * String that identifies a Plex library TV show item type.
 	 */
 	const TYPE_SHOW = 'show';
+	
+	/**
+	 * String that identifies a Plex library TV season item type.
+	 */
+	const TYPE_SEASON = 'season';
 
 	/**
 	 * String that identifies a Plex library episode item type.
@@ -93,12 +113,23 @@ class Plex_Server_Library extends Plex_Server
 	 */
 	protected function buildUrl($endpoint)
 	{
-		$url = sprintf(
-			'%s/%s/%s',
-			$this->getBaseUrl(),
+		$endpoint = sprintf(
+			'%s/%s',
 			self::ENDPOINT_LIBRARY,
 			$endpoint
 		);
+
+		// Some of the polymorphic methods leave double slashes, so here we
+		// simply clean them up.
+		$endpoint = str_replace('///', '/', $endpoint);
+		$endpoint = str_replace('//', '/', $endpoint);
+
+		$url = sprintf(
+			'%s/%s',
+			$this->getBaseUrl(),
+			$endpoint
+		);
+		
 		return $url;
 	}
 	
@@ -127,6 +158,45 @@ class Plex_Server_Library extends Plex_Server
 		return $items;
 	}
 	
+	/**
+	 * Given a function name, uses that name to decide what Plex library item
+	 * item type with whic the function is associated. This is useful when 
+	 * trying to polymorphically request items because we can use the calling
+	 * function to abstractly identify what type of item with which we are 
+	 * dealing.
+	 *
+	 * @uses Plex_Server_Library::TYPE_MOVIE
+	 * @uses Plex_Server_Library::TYPE_ARTIST
+	 * @uses Plex_Server_Library::TYPE_ALBUM
+	 * @uses Plex_Server_Library::TYPE_TRACK
+	 * @uses Plex_Server_Library::TYPE_PHOTO
+	 * @uses Plex_Server_Library::TYPE_SHOW
+	 * @uses Plex_Server_Library::TYPE_SEASON
+	 * @uses Plex_Server_Library::TYPE_EPISODE
+	 *
+	 * @return string The type of item with which the given function is
+	 * associated.
+	 */
+	public function functionToType($function)
+	{
+		$availableTypes = array(
+			self::TYPE_MOVIE,
+			self::TYPE_ARTIST,
+			self::TYPE_ALBUM,
+			self::TYPE_TRACK,
+			self::TYPE_PHOTO,
+			self::TYPE_SHOW,
+			self::TYPE_SEASON,
+			self::TYPE_EPISODE
+		);
+		
+		foreach ($availableTypes as $type) {
+			if (strpos(strtolower($function), $type) != FALSE) {
+				return $type;
+			}
+		}
+	}
+
 	/**
 	 * Returns an array of user defined Plex library sections that can be used
 	 * to interact with th eitems contained within.

@@ -37,6 +37,7 @@
  * @version 0.0.1
  */
 abstract class Plex_Server_Library_ItemAbstract 
+	extends Plex_Server_Library_SectionAbstract
 	implements Plex_Server_Library_ItemInterface
 {
 	/**
@@ -179,18 +180,21 @@ abstract class Plex_Server_Library_ItemAbstract
 	 * type.
 	 *
 	 * @param string $type The type of child section class being instantiated.
+	 * @param string $name The name of the Plex server.
+	 * @param string $address The IP address of the Plex server.
+	 * @param integer $port The port on which the Plex server is listening.
 	 *
 	 * @return Plex_Server_Library_ItemAbstract An instantiated item child
 	 * class.
 	 */
-	public static final function factory($type)
+	public static function factory($type, $name, $address, $port)
 	{
 		$class = sprintf(
 			'Plex_Server_Library_Item_%s',
 			ucfirst($type)
 		);
 		
-		return new $class();
+		return new $class($name, $address, $port);
 	}
 	
 	/**

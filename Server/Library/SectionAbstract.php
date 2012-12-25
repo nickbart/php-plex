@@ -629,7 +629,7 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 	 * @return Plex_Server_Library_SectionAbstract An instantiated section child
 	 * class.
 	 */
-	public static final function factory($type, $name, $address, $port)
+	public static function factory($type, $name, $address, $port)
 	{
 		$class = sprintf(
 			'Plex_Server_Library_Section_%s',

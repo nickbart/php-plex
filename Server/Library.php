@@ -136,6 +136,9 @@ class Plex_Server_Library extends Plex_Server
 	/**
 	 * Generic way of requesting Plex library items.
 	 *
+	 * @uses Plex_MachineAbstract::$name
+	 * @uses Plex_MachineAbstract::$address
+	 * @uses Plex_MachineAbstract::$port
 	 * @uses Plex_MachineAbstract::makeCall()
 	 * @uses Plex_Server_Library::buildUrl()
 	 * @uses Plex_Server_Library_ItemAbstract::factory()
@@ -149,11 +152,20 @@ class Plex_Server_Library extends Plex_Server
 		$itemArray = $this->makeCall($this->buildUrl($endpoint));
 		
 		foreach ($itemArray as $attribute) {
-			$item = Plex_Server_Library_ItemAbstract::factory(
-				$attribute['type']
-			);
-			$item->setAttributes($attribute);
-			$items[] = $item;
+			// Not all attributes at this point have a 'type.' Sometimes they
+			// represent a different sort of list like 'All episodes.' In this
+			// case we skip it by checking the integrity of the 'type' index. 
+			// If there is no type index then it is not an item.
+			if (isset($attribute['type'])) {
+				$item = Plex_Server_Library_ItemAbstract::factory(
+					$attribute['type'],
+					$this->name,
+					$this->address,
+					$this->port
+				);
+				$item->setAttributes($attribute);
+				$items[] = $item;
+			}
 		}
 		return $items;
 	}

@@ -292,4 +292,36 @@ class Plex_Server_Library_Section_Show
 			)
 		);
 	}
+	
+	/**
+	 * Returns a single show by its rating key, key, or exact title match.
+	 *
+	 * @param integer|string $polymorphicData Either a rating key, a key, or a
+	 * title for an exact title match that will be used to retrieve a single
+	 * show.
+	 *
+	 * @uses Plex_Server_Library_SectionAbstract::getPolymorphicItem()
+	 *
+	 * @retrun Plex_Server_Library_Item_Show A Plex library show object.
+	 */
+	public function getShow($polymorphicData)
+	{
+		return $this->getPolymorphicItem($polymorphicData);
+	}
+	
+	/**
+	 * Returns a single episode by its rating key, key, or exact title match.
+	 *
+	 * @param integer|string $polymorphicData Either a rating key, a key, or a
+	 * title for an exact title match that will be used to retrieve a single
+	 * episode.
+	 *
+	 * @uses Plex_Server_Library_SectionAbstract::getPolymorphicItem()
+	 *
+	 * @retrun Plex_Server_Library_Item_Episode A Plex library episode object.
+	 */
+	public function getEpisode($polymorphicData)
+	{
+		return $this->getPolymorphicItem($polymorphicData);	
+	}
 }

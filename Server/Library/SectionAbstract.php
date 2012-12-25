@@ -515,6 +515,8 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 	 * @uses Plex_Server_Library::ENDPOINT_METADATA
 	 * @uses Plex_Server_Library::ENDPOINT_LIBRARY
 	 * @uses Plex_Server_Library_ItemAbstract::getTitle()
+	 * @uses Plex_Server_Library_ItemAbstract::getRatingKey()
+	 * @uses Plex_Server_Library_SectionAbstract::getPolymorphicItem()
 	 *
 	 * @return Plex_Server_Library_ItemAbstract The request Plex library item.
 	 */
@@ -578,7 +580,25 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 			if (method_exists($this, $searchMethod)) {
 				foreach ($this->{$searchMethod}($polymorphicData) as $item) {
 					if ($item->getTitle() === $polymorphicData) {
-						return $item;
+						if ($scopedToItem) {
+							// So, this might seem a bit recursive, but there's
+							// method to this madness. If we are scoped to an 
+							// item and we have identified the item by its 
+							// title, we have to refetch the item singularly by 
+							// its rating key. We do this because we have used a
+							// "get" method to find this item instead of a 
+							// "search" method and Plex limits the amount of 
+							// data that comes back with an item when you ask
+							// for more than one at a time. By asking for it 
+							// singularly here, we guarantee we get the most 
+							// data back, like grandparent and parent keys and 
+							// titles.
+							return self::getPolymorphicItem(
+								$item->getRatingKey()
+							);
+						} else {
+							return $item;
+						}
 					}
 				}
 			}

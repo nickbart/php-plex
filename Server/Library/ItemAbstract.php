@@ -187,8 +187,10 @@ abstract class Plex_Server_Library_ItemAbstract
 	 * returned.
 	 *
 	 * @uses Plex_MachineAbstract::getCallingFunction()
+	 * @uses Plex_Server_Library_SectionAbstract::getPolymorphicItem()
 	 * @uses Plex_Server_Library::functionToType()
 	 * @uses Plex_Server_Library_ItemAbstract::getIndex()
+	 * @uses Plex_Server_Library_ItemAbstract::getRatingKey()
 	 *
 	 * @return Plex_Server_Library_ItemAbstract A single Plex library item.
 	 */
@@ -207,7 +209,15 @@ abstract class Plex_Server_Library_ItemAbstract
 		if (method_exists($this, $getMethod)) {
 			foreach ($this->{$getMethod}() as $item) {
 				if ($item->getIndex() === $index) {
-					return $item;
+					// So, this might seem a bit recursive, but there's method
+					// to this madness. Once we have identified the correct item
+					// by its key, we use the parent item retrieval system to
+					// get the item by its rating key. We do this because Plex
+					// limits the amount of data that comes back with an item
+					// when you ask for more than one at a time. By asking for
+					// for it singularly here, we guarantee we get the most data
+					// back, like grandparent and parent keys and titles.
+					return parent::getPolymorphicItem($item->getRatingKey());
 				}
 			}
 		}

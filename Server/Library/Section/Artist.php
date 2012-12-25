@@ -208,4 +208,36 @@ class Plex_Server_Library_Section_Artist
 			)
 		);
 	}
+	
+	/**
+	 * Returns a single artist by its rating key, key, or exact title match.
+	 *
+	 * @param integer|string $polymorphicData Either a rating key, a key, or a
+	 * title for an exact title match that will be used to retrieve a single
+	 * artist.
+	 *
+	 * @uses Plex_Server_Library_SectionAbstract::getPolymorphicItem()
+	 *
+	 * @retrun Plex_Server_Library_Item_Artist A Plex library artist object.
+	 */
+ 	public function getArtist($polymorphicData)
+	{
+		return $this->getPolymorphicItem($polymorphicData);
+	}
+	
+	/**
+	 * Returns a single track by its rating key, key, or exact title match.
+	 *
+	 * @param integer|string $polymorphicData Either a rating key, a key, or a
+	 * title for an exact title match that will be used to retrieve a single
+	 * track.
+	 *
+	 * @uses Plex_Server_Library_SectionAbstract::getPolymorphicItem()
+	 *
+	 * @retrun Plex_Server_Library_Item_Track A Plex library track object.
+	 */
+ 	public function getTrack($polymorphicData)
+	{
+		return $this->getPolymorphicItem($polymorphicData);
+	}
 }

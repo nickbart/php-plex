@@ -161,6 +161,11 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 	const ENDPOINT_SEARCH = 'search';
 	
 	/**
+	 * Endping for listing the child items of a parent or grandparent item.
+	 */
+	const ENDPOINT_CHILDREN = 'children';
+	
+	/**
 	 * Parameter for searching movies.
 	 */
 	const SEARCH_TYPE_MOVIE = 1;
@@ -290,6 +295,26 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 		return $this->buildEndpoint($endpoint);
 	}
 	
+	/**
+	 * Builds an endpoint for an item to retrieve its children and grandchildren
+	 * items.
+	 *
+	 * @uses Plex_Server_Library::ENDPOINT_METADATA
+	 * @uses Plex_Server_Library_SectionAbstract::ENDPOINT_CHILDREN
+	 * @uses Plex_Server_Library_ItemAbstract::getRatingKey()
+	 *
+	 * @return string The requested children endpoint.
+	 */
+	protected function buildChildrenEndpoint()
+	{
+		return sprintf(
+			'%s/%d/%s',
+			Plex_Server_Library::ENDPOINT_METADATA,
+			$this->getRatingKey(),
+			self::ENDPOINT_CHILDREN
+		);
+	}
+
 	/**
 	 * Generic method allowing a child class to retrieve all items for its
 	 * section.
@@ -518,7 +543,7 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 	 *
 	 * @return Plex_Server_Library_ItemAbstract The request Plex library item.
 	 */
-	protected function getPolymorphicItem($polymorphicData)
+	protected function getPolymorphicItem($polymorphicData, $scopedToItem = FALSE)
 	{
 		if (is_int($polymorphicData)) {
 			// If we have an integer then we can assume we have a rating key.
@@ -553,14 +578,27 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 			// If we don't have a rating key or a key then we just assume we're
 			// doing an exact title match.
 			
+			// If we are scoped to item it means an item is trying to retrieve
+			// children or grandchildren. This has two implications. We can't
+			// search at this level, so we have to "get" then loop/match/return.
+			// It also means that to get the calling function we have to change
+			// the depth as there is an extra function inbetween.
+			$depth = 2;
+			$functionType = 'search';
+			
+			if ($scopedToItem) {
+				$depth = 3;
+				$functionType = 'get';
+			}
+			
 			// Find the item type.
 			$itemType =  $this->functionToType(
-				$this->getCallingFunction()
+				$this->getCallingFunction($depth)
 			);
 			
 			// Find the search method and make sure it exists in the search
 			// class.
-			$searchMethod = sprintf('search%ss', ucfirst($itemType));
+			$searchMethod = sprintf('%s%ss', $functionType, ucfirst($itemType));
 			
 			if (method_exists($this, $searchMethod)) {
 				foreach ($this->{$searchMethod}($polymorphicData) as $item) {

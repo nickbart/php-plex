@@ -60,9 +60,9 @@ class Plex_Server_Library_Item_Show
 	 * @uses Plex_Server_Library::getItems()
 	 * @uses Plex_Server_Library_ItemAbstract::buildChildrenEndpoint()
 	 *
-	 * @return Plex_Server_Library_ItemSeason[] An array of Plex library season
+	 * @return Plex_Server_Library_Item_Season[] An array of Plex library season
 	 * objects.
-	 */	
+	 */
 	public function getSeasons()
 	{
 		return $this->getItems(

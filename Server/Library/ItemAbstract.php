@@ -174,7 +174,71 @@ abstract class Plex_Server_Library_ItemAbstract
 			$this->setUpdatedAt($attribute['updatedAt']);
 		}
 	}
-
+	
+	/**
+	 * Returns a single item by its index.
+	 *
+	 * @param integer $index The index by which the item will be matched and
+	 * returned.
+	 *
+	 * @uses Plex_MachineAbstract::getCallingFunction()
+	 * @uses Plex_Server_Library::functionToType()
+	 * @uses Plex_Server_Library_ItemAbstract::getIndex()
+	 *
+	 * @return Plex_Server_Library_ItemAbstract A single Plex library item.
+	 */
+	public function getItemByIndex($index)
+	{
+		// Since we 'hop' from the overridden 'getPolymorphicItem' method, we
+		// have to extend the depth by one here to properly identify the calling
+		// function.
+		$itemType = $this->functionToType(
+			$this->getCallingFunction(3)
+		);
+		
+		// Find the get method and make sure it exists in the calling class.
+		$getMethod = sprintf('get%ss', ucfirst($itemType));
+		
+		if (method_exists($this, $getMethod)) {
+			foreach ($this->{$getMethod}() as $item) {
+				if ($item->getIndex() === $index) {
+					return $item;
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Override of the setion version of this method so we can apply slightly
+	 * different rules when retrieving single children and grandchildren at the
+	 * item level.
+	 *
+	 * @param integer|string $polymorphicData Either an index, a key, or a title
+	 * for an exact title match that will be used to retrieve a single library
+	 * item.
+	 *
+	 * @uses Plex_Server_Library_ItemAbstract::getItemByIndex()
+	 * @uses Plex_Server_Library_SectionAbstract::getPolymorphicItem()
+	 *
+	 * @return Plex_Server_Library_ItemAbstract A single Plex library item.
+	 */
+	public function getPolymorphicItem($polymorphicData)
+	{
+		// At the item level, instead of assuming an integer is a rating key, we
+		// assume an integer is an index. This allows us to retrieve seasons,
+		// episodes, and tracks by their number in sequence, which is a more
+		// common way than by its Plex assigned rating key.
+		if (is_int($polymorphicData)) {
+			return $this->getItemByIndex($polymorphicData);
+		} else {
+			// If we're not retrieving by index, then we simply default to the
+			// parent function, however, we scope it to 'item' so the calling
+			// function is identified by the right depth and we use a 'get'
+			// function to find the items instead of search.
+			return parent::getPolymorphicItem($polymorphicData, TRUE);
+		}
+	}
+	
 	/**
 	 * Static factory method used to instantiate child item classes by their
 	 * type.

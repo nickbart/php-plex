@@ -276,11 +276,15 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 	 */
 	protected function buildSearchEndpoint($type, $query)
 	{
+		$parameters = array(
+			'type' => $type,
+			'query' => trim($query)
+		);
+		
 		$endpoint = sprintf(
-			'%s?type=%d&query=%s',
+			'%s?%s',
 			self::ENDPOINT_SEARCH,
-			$type,
-			trim($query)
+			http_build_query($parameters)
 		);
 		
 		return $this->buildEndpoint($endpoint);

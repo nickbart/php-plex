@@ -434,4 +434,20 @@ class Plex_Server_Library_Section_Movie
 			)
 		);
 	}
+
+	/**
+	 * Returns a single movie by its rating key, key, or exact title match.
+	 *
+	 * @param integer|string $polymorphicData Either a rating key, a key, or a
+	 * title for an exact title match that will be used to retrieve a single
+	 * mvoie.
+	 *
+	 * @uses Plex_Server_Library_SectionAbstract::getPolymorphicItem()
+	 *
+	 * @retrun Plex_Server_Library_Item_Movie A Plex library movie object.
+	 */	
+	public function getMovie($polymorphicData)
+	{
+		return $this->getPolymorphicItem($polymorphicData);
+	}
 }

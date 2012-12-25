@@ -114,6 +114,11 @@ abstract class Plex_Server_Library_ItemAbstract
 	protected $updatedAt;
 	
 	/**
+	 * Endpoint for listing the child items of a parent or grandparent item.
+	 */
+	const ENDPOINT_CHILDREN = 'children';
+
+	/**
 	 * Sets an array of attribues, if they exist, to the corresponding class
 	 * member.
 	 * 
@@ -237,6 +242,26 @@ abstract class Plex_Server_Library_ItemAbstract
 			// function to find the items instead of search.
 			return parent::getPolymorphicItem($polymorphicData, TRUE);
 		}
+	}
+	
+	/**
+	 * Builds an endpoint for an item to retrieve its children and grandchildren
+	 * items.
+	 *
+	 * @uses Plex_Server_Library::ENDPOINT_METADATA
+	 * @uses Plex_Server_Library_SectionAbstract::ENDPOINT_CHILDREN
+	 * @uses Plex_Server_Library_ItemAbstract::getRatingKey()
+	 *
+	 * @return string The requested children endpoint.
+	 */
+	protected function buildChildrenEndpoint()
+	{
+		return sprintf(
+			'%s/%d/%s',
+			Plex_Server_Library::ENDPOINT_METADATA,
+			$this->getRatingKey(),
+			self::ENDPOINT_CHILDREN
+		);
 	}
 	
 	/**

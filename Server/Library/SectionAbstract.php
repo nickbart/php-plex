@@ -156,14 +156,9 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 	const ENDPOINT_CATEGORY_YEAR = 'year';
 	
 	/**
-	 * Endpoing for searching a section for items.
+	 * Endpoint for searching a section for items.
 	 */
 	const ENDPOINT_SEARCH = 'search';
-	
-	/**
-	 * Endping for listing the child items of a parent or grandparent item.
-	 */
-	const ENDPOINT_CHILDREN = 'children';
 	
 	/**
 	 * Parameter for searching movies.
@@ -295,26 +290,6 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 		return $this->buildEndpoint($endpoint);
 	}
 	
-	/**
-	 * Builds an endpoint for an item to retrieve its children and grandchildren
-	 * items.
-	 *
-	 * @uses Plex_Server_Library::ENDPOINT_METADATA
-	 * @uses Plex_Server_Library_SectionAbstract::ENDPOINT_CHILDREN
-	 * @uses Plex_Server_Library_ItemAbstract::getRatingKey()
-	 *
-	 * @return string The requested children endpoint.
-	 */
-	protected function buildChildrenEndpoint()
-	{
-		return sprintf(
-			'%s/%d/%s',
-			Plex_Server_Library::ENDPOINT_METADATA,
-			$this->getRatingKey(),
-			self::ENDPOINT_CHILDREN
-		);
-	}
-
 	/**
 	 * Generic method allowing a child class to retrieve all items for its
 	 * section.

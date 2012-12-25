@@ -53,4 +53,35 @@ class Plex_Server_Library_Item_Show
 	{
 		parent::setAttributes($attribute);
 	}
+	
+	/**
+	 * Returns an array of all the season objects for the intstantiated show.
+	 *
+	 * @uses Plex_Server_Library::getItems()
+	 * @uses Plex_Server_Library_ItemAbstract::buildChildrenEndpoint()
+	 *
+	 * @return Plex_Server_Library_ItemSeason[] An array of Plex library season
+	 * objects.
+	 */	
+	public function getSeasons()
+	{
+		return $this->getItems(
+			$this->buildChildrenEndpoint()
+		);
+	}
+	
+	/**
+	 * Returns a single season by index, key, or exact title match.
+	 *
+ 	 * @param integer|string $polymorphicData Either an index, a key, or a title
+	 * for an exact title match that will be used to retrieve a single season.
+	 * 
+	 * @uses Plex_Server_Library_ItemAbstract::getPolymorphicItem()
+	 *
+	 * @return Plex_Server_Library_Item_Season A single season.
+	 */
+	public function getSeason($polymorphicData)
+	{
+		return $this->getPolymorphicItem($polymorphicData);
+	}
 }

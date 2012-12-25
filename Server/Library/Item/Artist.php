@@ -53,4 +53,35 @@ class Plex_Server_Library_Item_Artist
 	{
 		parent::setAttributes($attribute);
 	}
+
+	/**
+	 * Returns an array of all the albumn objects for the intstantiated artist.
+	 *
+	 * @uses Plex_Server_Library::getItems()
+	 * @uses Plex_Server_Library_ItemAbstract::buildChildrenEndpoint()
+	 *
+	 * @return Plex_Server_Library_Item_Album[] An array of Plex library album
+	 * objects.
+	 */	
+	public function getAlbums()
+	{
+		return $this->getItems(
+			$this->buildChildrenEndpoint()
+		);
+	}
+
+	/**
+	 * Returns a single album by index, key, or exact title match.
+	 *
+ 	 * @param integer|string $polymorphicData Either an index, a key, or a title
+	 * for an exact title match that will be used to retrieve a single album.
+	 * 
+	 * @uses Plex_Server_Library_ItemAbstract::getPolymorphicItem()
+	 *
+	 * @return Plex_Server_Library_Item_Album A single album.
+	 */
+	public function getAlbum($polymorphicData)
+	{
+		return $this->getPolymorphicItem($polymorphicData);
+	}
 }

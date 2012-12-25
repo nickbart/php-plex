@@ -132,14 +132,19 @@ abstract class Plex_MachineAbstract implements Plex_MachineInterface
 	 * some of our polymorphic requests as the calling function can tell us what
 	 * type of item is being requested.
 	 *
+	 * @param integer $depth Depth defaults to 2 because 0 is this function and 
+	 * 1 will be the function that asked for the calling function. This can be
+	 * changed by the calling function in case a specific calling function needs
+	 * to be identified. This can be handy if the original calling function goes
+	 * through a number of hops on its way to identification.
+	 *
 	 * @return string The name of the function that called the function that
 	 * issued the getCallingFunction request.
 	 */
-	protected function getCallingFunction()
+	protected function getCallingFunction($depth = 2)
 	{
 		$backtrace = debug_backtrace();
-		// Index will always be 2 because 0 is this function and 1 will be the
-		// function that asked for the calling function.
-		return $backtrace[2]['function'];
+
+		return $backtrace[$depth]['function'];
 	}
 }

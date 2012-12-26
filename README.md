@@ -1,7 +1,7 @@
 php-plex
 ========
 
-A simple PHP library for interacting with the Plex (http://plexapp.com) HTTP API.
+A simple PHP library for interacting with the Plex (http://plexapp.com) HTTP Control API.
 
 Requirements
 ------------
@@ -11,13 +11,16 @@ simpleXML
 
 Examples
 --------
+	
+Set Up
 
+	require_once('path/to/Plex.php');
+	
 	$servers = array(
 		'shepherd' => array(
 			'host' => '192.168.11.9'
 		)
 	);
-	
 	
 	$plex = new Plex();
 	$plex->registerServers($servers);
@@ -25,57 +28,161 @@ Examples
 	$server = $plex->getServer('shepherd');
 	$client = $plex->getClient('zoe');
 
+Get items at the library level
+	
+	// On deck and recently added items
+	$server->getLibrary()->getOnDeckItems();
+	$server->getLibrary()->getRecentlyAddedItems();
+	
+	// Sections
+	$server->getLibrary()->getSections();
+	$server->getLibrary()->getSectionByKey(1);
+	$server->getLibrary()->getSectionByKey(4);
+	$server->getLibrary()->getSectionByKey(5);
+	$server->getLibrary()->getSectionByKey(6);
 
-	// Library 
-	$onDeck = $server->getLibrary()->getOnDeckItems();
-	$recentlyAddedItems = $server->getLibrary()->getRecentlyAddedItems();
-	$allSections = $server->getLibrary()->getSections();
-	$movieSection = $server->getLibrary()->getSectionByKey(1);
-	$showSection = $server->getLibrary()->getSectionByKey(4);
-	$artistSection = $server->getLibrary()->getSectionByKey(5);
-	$photoSection = $server->getLibrary()->getSectionByKey(6);
+Movies
 	
-	// Show Section
-	$allShows = $showSection->getAllShows();
-	$unwatchedShows = $showSection->getUnwatchedShows();
-	$recentlyAiredEpisodes = $showSection->getRecentlyAiredEpisodes();
-	$recentlyAddedEpisodes = $showSection->getRecentlyAddedEpisodes();
-	$recentlyViewedEpisodes = $showSection->getRecentlyViewedEpisodes();
-	$onDeckEpisodes = $showSection->getOnDeckEpisodes();
-	$collections = $showSection->getCollections();
-	$showsByCollection = $showSection->getShowsByCollection(13205);
-	$showsByFirstCharacter = $showSection->getShowsByFirstCharacter('Q');
-	$genres = $showSection->getGenres();
-	$showsByGenre = $showSection->getShowsByGenre(8196);
-	$showsByYear = $showSection->getShowsByYear(1983);
-	$showsByContentRating = $showSection->getShowsByContentRating('TV-MA');
+	// Lists of movies
+	$section->getAllMovies();
+	$section->getUnwatchedMovies();
+	$section->getRecentlyReleasedMovies();
+	$section->getRecentlyAddedMovies();
+	$section->getRecentlyViewedMovies();
+	$section->getOnDeckMovies();
+	$section->getMoviesByYear(1983);
+	$section->getMoviesByDecade(1980);
+	$section->getMoviesByContentRating('R');
+	$section->getMoviesByResolution('1080');
+	$section->getMoviesByFirstCharacter('Q');
 	
-	// Movie Section
-	$allMovies = $movieSection->getAllMovies();
-	$unwatchedMovies = $movieSection->getUnwatchedMovies();
-	$recentlyReleasedMovies = $movieSection->getRecentlyReleasedMovies();
-	$recentlyAddedMovies = $movieSection->getRecentlyAddedMovies();
-	$recentlyViewedMovies = $movieSection->getRecentlyViewedMovies();
-	$onDeckMovies = $movieSection->getOnDeckMovies();
-	$collections = $movieSection->getCollections();
-	$moviesByCollection = $movieSection->getMoviesByCollection(13206);
-	$moviesByGenre = $movieSection->getMoviesByGenre(1252);
-	$moviesByYear = $movieSection->getMoviesByYear(1983);
-	$moviesByDecade = $movieSection->getMoviesByDecade(1980);
-	$directors = $movieSection->getDirectors();
-	$moviesByDirector = $movieSection->getMoviesByDirector(357);
-	$actors = $movieSection->getActors();
-	$moviesByContentRating = $movieSection->getMoviesByContentRating('R');
-	$moviesByResolution = $movieSection->getMoviesByResolution('1080');
-	$moviesByFirstCharacter = $movieSection->getMoviesByFirstCharacter('Q');
+	// Single movies
 	
-	// Artist Section
-	$allArtists = $artistSection->getAllArtists();
-	$allAlbums = $artistSection->getAllAlbums();
-	$genres = $artistSection->getGenres();
-	$artistsByGenre = $artistSection->getArtistsByGenre(11644);
-	$albumsByDecade = $artistSection->getAlbumsByDecade(1980);
-	$albumsByYear = $artistSection->getAlbumsByYear(1983);
-	$collections = $artistSection->getCollections()
-	$artistsByCollection = $artistSection->getMoviesByCollection(13207);
-	$recentlyAddedAlbums = $artistSection->getRecentlyAddedAlbums();
+	// Exact title
+	$section->getMovie('Heavy Metal in Baghdad');
+	// Rating key
+	$section->getMovie(83696);
+	// Key
+	$section->getMovie('/library/metadata/83696');	
+	
+	// Collections
+	$section->getCollections();
+	$section->getMoviesByCollection(13206);
+	
+	// Genres
+	$section->getGenres();
+	$section->getMoviesByGenre(1252);
+
+	// Directors
+	$section->getDirectors();
+	$section->getMoviesByDirector(357);
+	
+	// Actors
+	$section->getActors();
+	$section->getMoviesByActor(3903);
+	
+	// Search
+	$section->searchMovies('fly');
+	
+Shows, seasons, and episodes
+	
+	// Lists of shows
+	$section->getAllShows();
+	$section->getUnwatchedShows();
+	$section->getShowsByFirstCharacter('Q');
+	$section->getShowsByYear(1983);
+	$section->getShowsByContentRating('TV-MA');
+	
+	// Single shows
+	// Exact title
+	$section->getShow('Firefly');
+	// Rating key
+	$section->getShow(46585);
+	// Key
+	$section->getShow('/library/metadata/46585');
+	
+	// Lists of episodes
+	$section->getRecentlyAiredEpisodes();
+	$section->getRecentlyAddedEpisodes();
+	$section->getRecentlyViewedEpisodes();
+	$section->getOnDeckEpisodes();
+	
+	// Single episodes
+	// Exact title
+	$section->getEpisode('Crucifixed');
+	// Rating key
+	$section->getEpisode(83780);
+	// Key
+	$section->getEpisode('/library/metadata/83780');
+	
+	// Collections
+	$section->getCollections();
+	$section->getShowsByCollection(13205);
+	
+	// Genres
+	$section->getGenres();
+	$section->getShowsByGenre(8196);
+	
+	// Search
+	$section->searchShows('fly');
+	$section->searchEpisodes('fly');
+	
+	// By show
+	$show = $showSection->getShow('Peep Show');
+	$seasons = $show->getSeasons();
+	$seasonByIndex = $show->getSeason(2);
+	$seasonByKey = $show->getSeason('/library/metadata/3112');
+	$seasonByExactTitleMatch = $show->getSeason('Season 2');
+	$episodes = $seasonByIndex->getEpisodes();
+	$episodeByIndex = $seasonByIndex->getEpisode(4);
+	$episodeByKey = $seasonByIndex->getEpisode('/library/metadata/3116');
+	$episodeByExactTitleMatch = $seasonByIndex->getEpisode('University Challenge');
+	
+Artists, albums, and tracks
+	
+	// Lists of artists
+	$section->getAllArtists();
+	
+	// Single artists
+	// Exact title
+	$section->getArtist('Acrassicauda');
+	// Rating key
+	$section->getArtist(83757);
+	// Key
+	$section->getArtist('/library/metadata/83757');
+
+	// Collections
+	$section->getCollections()
+	$section->getArtistsByCollection(13206);
+	
+	// Genres
+	$section->getGenres();
+	$section->getArtistsByGenre(11644);
+
+	// Albums
+	$section->getAllAlbums();
+	$section->getAlbumsByDecade(1980);
+	$section->getAlbumsByYear(1983);
+	$section->getRecentlyAddedAlbums();
+
+	// Single tracks
+	// Exact title
+	$section->getTrack('Can\'t Buy Me Love');
+	// Rating key
+	$section->getTrack(67962);
+	// Key
+	$section->getTrack('/library/metadata/67962');
+	
+	// Search
+	$section->searchArtists('fly');
+	$section->searchTracks('fly');
+	
+	// By artist
+	$artist = $artistSection->getArtist('Paolo Nutini');
+	$albums = $artist->getAlbums();
+	$albumByKey = $artist->getAlbum('/library/metadata/57718');
+	$albumByExactTitleMatch = $artist->getAlbum('These Streets');
+	$tracks = $albumByExactTitleMatch->getTracks();
+	$trackByIndex = $albumByExactTitleMatch->getTrack(3);
+	$trackByKey = $albumByExactTitleMatch->getTrack('/library/metadata/57726');
+	$trackByExactTitleMatch = $albumByExactTitleMatch->getTrack('Rewind');	

@@ -55,14 +55,14 @@ class Plex_Server_Library_Item_Artist
 	}
 
 	/**
-	 * Returns an array of all the albumn objects for the intstantiated artist.
+	 * Returns an array of all the album objects for the intstantiated artist.
 	 *
 	 * @uses Plex_Server_Library::getItems()
 	 * @uses Plex_Server_Library_ItemAbstract::buildChildrenEndpoint()
 	 *
 	 * @return Plex_Server_Library_Item_Album[] An array of Plex library album
 	 * objects.
-	 */	
+	 */
 	public function getAlbums()
 	{
 		return $this->getItems(

@@ -53,4 +53,35 @@ class Plex_Server_Library_Item_Album
 	{
 		parent::setAttributes($attribute);
 	}
+	
+	/**
+	 * Returns an array of all the track objects for the intstantiated album.
+	 *
+	 * @uses Plex_Server_Library::getItems()
+	 * @uses Plex_Server_Library_ItemAbstract::buildChildrenEndpoint()
+	 *
+	 * @return Plex_Server_Library_Item_Track[] An array of Plex library track
+	 * objects.
+	 */
+	public function getTracks()
+	{
+		return $this->getItems(
+			$this->buildChildrenEndpoint()
+		);
+	}
+	
+	/**
+	 * Returns a single track by index, key, or exact title match.
+	 *
+ 	 * @param integer|string $polymorphicData Either an index, a key, or a title
+	 * for an exact title match that will be used to retrieve a single track.
+	 * 
+	 * @uses Plex_Server_Library_ItemAbstract::getPolymorphicItem()
+	 *
+	 * @return Plex_Server_Library_Item_Track A single track.
+	 */
+	public function getTrack($polymorphicData)
+	{
+		return $this->getPolymorphicItem($polymorphicData);
+	}
 }

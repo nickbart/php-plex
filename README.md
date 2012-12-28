@@ -217,3 +217,21 @@ Navigation Controller
 	$navigation->back();
 	$navigation->contextMenu();
 	$navigation->toggleOSD();
+
+Application Controller
+
+	$application = $client->getApplicationController();
+	
+	$episode = $section
+		->getShow('It\'s Always Sunny in Philadelphia')
+		->getSeason(5)
+		->getEpisode(4);
+	
+	// Play episode from beginning
+	$application->playMedia($episode);
+	
+	// Play epsiode from where it was last stopped
+	$application->playMedia($episode, $episode->getViewOffset());
+	
+	// Set voume to half
+	$application->setVolume(50);

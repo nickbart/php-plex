@@ -187,7 +187,7 @@ Artists, albums, and tracks
 	$trackByKey = $albumByExactTitleMatch->getTrack('/library/metadata/57726');
 	$trackByExactTitleMatch = $albumByExactTitleMatch->getTrack('Rewind');	
 
-Playback controller
+Playback Controller
 
 	$playback = $client->getPlaybackController();
 	$playback->play();
@@ -201,3 +201,19 @@ Playback controller
 	$playback->bigStepBack();
 	$playback->skipNext();
 	$playback->skipPrevious();
+
+Navigation Controller
+
+	$navigation = $client->getNavigationController();
+	$navigation->moveUp();
+	$navigation->moveDown();
+	$navigation->moveLeft();
+	$navigation->moveRight()
+	$navigation->pageUp();
+	$navigation->pageDown();
+	$navigation->nextLetter();
+	$navigation->previousLetter();
+	$navigation->select();
+	$navigation->back();
+	$navigation->contextMenu();
+	$navigation->toggleOSD();

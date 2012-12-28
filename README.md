@@ -12,7 +12,7 @@ simpleXML
 What It Does
 ------------
 
-Allows access to your Plex library so that you can retrieve your Shows, seasons, episodes, movies, artists, albums, and tracks in a number of convienent ways.
+Allows access to your Plex library so that you can retrieve your shows, seasons, episodes, movies, artists, albums, and tracks in a number of convenient ways.
 
 Has simple commands for playback and navigation and also an interface for playing episodes, movies, and tracks.
 

@@ -186,3 +186,18 @@ Artists, albums, and tracks
 	$trackByIndex = $albumByExactTitleMatch->getTrack(3);
 	$trackByKey = $albumByExactTitleMatch->getTrack('/library/metadata/57726');
 	$trackByExactTitleMatch = $albumByExactTitleMatch->getTrack('Rewind');	
+
+Playback controller
+
+	$playback = $client->getPlaybackController();
+	$playback->play();
+	$playback->pause();
+	$playback->stop();
+	$playback->rewind();
+	$playback->fastForward();
+	$playback->stepForward();
+	$playback->bigStepForward();
+	$playback->stepBack();
+	$playback->bigStepBack();
+	$playback->skipNext();
+	$playback->skipPrevious();

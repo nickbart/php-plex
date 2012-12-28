@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plex Client Controller Abstract
+ * Plex Client Controller
  * 
  * @category php-plex
  * @package Plex_Client

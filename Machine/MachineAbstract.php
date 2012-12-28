@@ -88,6 +88,8 @@ abstract class Plex_MachineAbstract implements Plex_MachineInterface
 	 */
 	protected function xmlAttributesToArray($xml)
 	{
+		if (!$xml) return false;
+		
 		$array = array();
 		$i= 0;
 		foreach($xml as $node) {

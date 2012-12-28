@@ -78,6 +78,7 @@ class Plex_Server extends Plex_MachineAbstract
 	 * @uses Plex_Client::setHost()
 	 * @uses Plex_Client::setMachineIdentifier()
 	 * @uses Plex_Client::setVersion()
+	 * @uses Plex_Client::setServer()
 	 * 
 	 * @return Plex_Client[] An array of Plex clients indexed by the Plex client
 	 * name.
@@ -102,6 +103,7 @@ class Plex_Server extends Plex_MachineAbstract
 			$client->setHost($attribute['host']);
 			$client->setMachineIdentifier($attribute['machineIdentifier']);
 			$client->setVersion($attribute['version']);
+			$client->setServer($this);
 			$clients[$attribute['name']] = $client;
 		}
 		

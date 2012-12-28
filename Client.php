@@ -55,6 +55,12 @@ class Plex_Client extends Plex_MachineAbstract
 	private $version;
 	
 	/**
+	 * The server that registered the client.
+	 * @var Plex_server 
+	 */
+	private $server;
+	
+	/**
 	 * The default port on which a Plex client listens.
 	 */
 	const DEFAULT_PORT = 3000;
@@ -79,6 +85,75 @@ class Plex_Client extends Plex_MachineAbstract
 		$this->name = $name;
 		$this->address = $address;
 		$this->port = $port ? $port : self::DEFAULT_PORT;
+	}
+	
+	/**
+	 * Given a controller type, returns an instantiated controller object.
+	 *
+	 * @param string $type The type of controller to be insantiated.
+	 *
+	 * @uses Plex_Client_ControllerAbstract::factory()
+	 * @uses Plex_Client::$name
+	 * @uses Plex_Client::$address
+	 * @uses Plex_Client::$port
+	 * @uses Plex_Client::getServer()
+	 *
+	 * @return Plex_Client_ControllerAbstract The requsted controller.
+	 */
+	private function getController($type)
+	{
+		return Plex_Client_ControllerAbstract::factory(
+			$type,
+			$this->name,
+			$this->address,
+			$this->port,
+			$this->getServer()
+		);
+	}
+	
+	/**
+	 * Returns the navigation controller.
+	 *
+	 * @uses Plex_Client::getController()
+	 * @uses Plex_Client_ControllerAbstract::TYPE_NAVIGATION
+	 *
+	 * @return Plex_Client_Controller_Navigation The navigation controller.
+	 */
+	public function getNavigationController()
+	{
+		return $this->getController(
+			Plex_Client_ControllerAbstract::TYPE_NAVIGATION
+		);
+	}
+	
+	/**
+	 * Returns the playback controller.
+	 *
+	 * @uses Plex_Client::getController()
+	 * @uses Plex_Client_ControllerAbstract::TYPE_PLAYBACK
+	 *
+	 * @return Plex_Client_Controller_Playback The playback controller.
+	 */
+	public function getPlaybackController()
+	{
+		return $this->getController(
+			Plex_Client_ControllerAbstract::TYPE_PLAYBACK
+		);
+	}
+	
+	/**
+	 * Returns the application controller.
+	 *
+	 * @uses Plex_Client::getController()
+	 * @uses Plex_Client_ControllerAbstract::TYPE_APPLICATION
+	 *
+	 * @return Plex_Client_Controller_Application The application controller.
+	 */
+	public function getApplicationController()
+	{
+		return $this->getController(
+			Plex_Client_ControllerAbstract::TYPE_APPLICATION
+		);
 	}
 	
 	/**
@@ -195,5 +270,31 @@ class Plex_Client extends Plex_MachineAbstract
 	public function setVersion($version)
 	{
 		$this->version = $version;
+	}
+	
+	/**
+	 * Returns the server that registered the client.
+	 *
+	 * @uses Plex_Client::$server
+	 *
+	 * @return Plex_Server The server that registered the client.
+	 */
+	protected function getServer()
+	{
+		return $this->server;
+	}
+	
+	/**
+	 * Sets the server that registered the client.
+	 *
+	 * @param Plex_Server $server The server that registered the client.
+	 *
+	 * @uses Plex_Client::$server
+	 *
+	 * @return void
+	 */
+	public function setServer(Plex_Server $server)
+	{
+		$this->server = $server;
 	}
 }

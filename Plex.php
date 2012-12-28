@@ -50,6 +50,10 @@ require_once(sprintf('%s/Server/Library/Item/Artist.php', $phpPlexDir));
 require_once(sprintf('%s/Server/Library/Item/Album.php', $phpPlexDir));
 require_once(sprintf('%s/Server/Library/Item/Track.php', $phpPlexDir));
 require_once(sprintf('%s/Client.php', $phpPlexDir));
+require_once(sprintf('%s/Client/ControllerAbstract.php', $phpPlexDir));
+require_once(sprintf('%s/Client/Controller/Navigation.php', $phpPlexDir));
+require_once(sprintf('%s/Client/Controller/Playback.php', $phpPlexDir));
+require_once(sprintf('%s/Client/Controller/Application.php', $phpPlexDir));
 
 /**
  * Bootstrap class for using php-plex to interact with the Plex HTTP API.

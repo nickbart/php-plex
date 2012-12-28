@@ -9,6 +9,24 @@ Requirements
 php-curl  
 simpleXML
 
+What It Does
+------------
+
+Allows access to your Plex library so that you can retrieve your Shows, seasons, episodes, movies, artists, albums, and tracks in a number of convienent ways.
+
+Has simple commands for playback and navigation and also an interface for playing episodes, movies, and tracks.
+
+What It Does Not Do
+-------------------
+
+Photos have not been implemented yet.
+
+Playback is only implemented at the episode, movies, and track level. The plan is to implement passing a season or album to the application controller and have it play through the entire thing.
+
+Paging has not been implemented for lists of items.
+
+There is no proper error handling, things just tend to fail silently. More explicit error handling will be added at a later date.
+
 Examples
 --------
 	

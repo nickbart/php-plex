@@ -79,17 +79,28 @@ abstract class Plex_Client_ControllerAbstract extends Plex_Client
 	 * Using the calling class and function builds and calls the URL for the
 	 * Plex client controller command.
 	 *
+	 * @param array $params An array of parameters that will be used to build an
+	 * http query string.
+	 *
 	 * @uses Plex_MachineAbstract::getCallingFunction()
 	 * @uses Plex_MachineAbstract::makeCall()
 	 * @uses Plex_Client_ControllerAbstract::buildUrl()
 	 *
 	 * @return void
 	 */
-	protected function executeCommand()
+	protected function executeCommand($params = array())
 	{
 		$controller = strtolower(array_pop(explode('_', get_class($this))));
 		$command = $this->getCallingFunction();
-		$this->makeCall($this->buildUrl($controller, $command));
+		$url = $this->buildUrl($controller, $command);
+		if (count($params) > 0) {
+			$url = sprintf(
+				'%s?%s',
+				$url,
+				http_build_query($params)
+			);
+		}
+		$this->makeCall($url);
 	}
 	
 	/**

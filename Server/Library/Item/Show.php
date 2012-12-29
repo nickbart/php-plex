@@ -84,4 +84,35 @@ class Plex_Server_Library_Item_Show
 	{
 		return $this->getPolymorphicItem($polymorphicData);
 	}
+	
+	/**
+	 * Returns all the episodes for a given show.
+	 *
+	 * @uses Plex_Server_Library::getItems()
+	 * @uses Plex_Server_Library_ItemAbstract::buildAllLeavesEndpoint()
+	 *
+	 * @ return Plex_Server_Library_Item_Episode[] Array of all the episodes for
+	 * a given show.
+	 */
+	public function getAllEpisodes()
+	{
+		return $this->getItems(
+			$this->buildAllLeavesEndpoint()
+		);
+	}
+	
+	/**
+	 * Returns a single random episode for a given show.
+	 *
+	 * @uses Plex_Server_Library_Item_Show::getAllEpisodes()
+	 *
+	 * @return Plex_Server_Library_Item_Episode A single random episode.
+	 */
+	public function getRandomEpisode()
+	{
+		$allEpisodes = $this->getAllEpisodes();
+		$ceiling = count($allEpisodes)-1;
+		$randomNumber = mt_rand(0, $ceiling);
+		return $allEpisodes[$randomNumber];
+	}
 }

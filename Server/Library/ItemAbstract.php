@@ -117,7 +117,12 @@ abstract class Plex_Server_Library_ItemAbstract
 	 * Endpoint for listing the child items of a parent or grandparent item.
 	 */
 	const ENDPOINT_CHILDREN = 'children';
-
+	
+	/**
+	 * Endpoint for listing all the grandchild items of an item.
+	 */
+	const ENDPOINT_ALL_LEAVES = 'allLeaves';
+	
 	/**
 	 * Sets an array of attribues, if they exist, to the corresponding class
 	 * member.
@@ -271,6 +276,25 @@ abstract class Plex_Server_Library_ItemAbstract
 			Plex_Server_Library::ENDPOINT_METADATA,
 			$this->getRatingKey(),
 			self::ENDPOINT_CHILDREN
+		);
+	}
+	
+	/**
+	 * Builds an endpoint for an item to retrieve all of its grandchildren.
+	 *
+	 * @uses Plex_Server_Library::ENDPOINT_METADATA
+	 * @uses Plex_Server_Library_SectionAbstract::ENDPOINT_ALL_LEAVES
+	 * @uses Plex_Server_Library_ItemAbstract::getRatingKey()
+	 *
+	 * @return string The requested grandchildren endpoint.
+	 */
+	protected function buildAllLeavesEndpoint()
+	{
+		return sprintf(
+			'%s/%d/%s',
+			Plex_Server_Library::ENDPOINT_METADATA,
+			$this->getRatingKey(),
+			self::ENDPOINT_ALL_LEAVES
 		);
 	}
 	

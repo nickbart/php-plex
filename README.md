@@ -36,7 +36,7 @@ Set Up
 	
 	$servers = array(
 		'shepherd' => array(
-			'host' => '192.168.11.9'
+			'address' => '192.168.11.9'
 		)
 	);
 	

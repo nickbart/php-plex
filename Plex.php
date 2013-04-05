@@ -30,6 +30,7 @@ $phpPlexDir = dirname(__FILE__);
 
 require_once(sprintf('%s/Exception/ExceptionInterface.php', $phpPlexDir));
 require_once(sprintf('%s/Exception/ExceptionAbstract.php', $phpPlexDir));
+require_once(sprintf('%s/Exception/Machine.php', $phpPlexDir));
 require_once(sprintf('%s/Machine/MachineInterface.php', $phpPlexDir));
 require_once(sprintf('%s/Machine/MachineAbstract.php', $phpPlexDir));
 require_once(sprintf('%s/Server.php', $phpPlexDir));

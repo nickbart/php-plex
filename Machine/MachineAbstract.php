@@ -6,9 +6,9 @@
  * @category php-plex
  * @package Plex_Machine
  * @author <nickbart@gmail.com> Nick Bartkowiak
- * @copyright (c) 2012 Nick Bartkowiak
+ * @copyright (c) 2013 Nick Bartkowiak
  * @license http://www.gnu.org/licenses/gpl-3.0.html GNU Public Licence (GPLv3)
- * @version 0.0.1
+ * @version 0.0.2
  *
  * This file is part of php-plex.
  * 
@@ -110,6 +110,8 @@ abstract class Plex_MachineAbstract implements Plex_MachineInterface
 	 * @param string $url The URL to which the request is to be made.
 	 *
 	 * @return SimpleXMLElement An XML document from a Plex machine.
+	 *
+	 * @throws Plex_Exception_Machine
 	 */
 	protected function makeCall($url)
 	{
@@ -120,6 +122,13 @@ abstract class Plex_MachineAbstract implements Plex_MachineInterface
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 		
 		$response = curl_exec($ch);
+
+		if ($response === FALSE) {
+			throw new Plex_Exception_Machine(
+				'CURL_ERROR',
+				array(curl_errno($ch), curl_error($ch))
+			);
+		}
 		
 		curl_close($ch);
 		
@@ -130,7 +139,7 @@ abstract class Plex_MachineAbstract implements Plex_MachineInterface
 	
 	/**
 	 * Universal function so any method belonging to a child class of a Plex
-	 * machine can discover which fucntion called it. This is used mainly for
+	 * machine can discover which function called it. This is used mainly for
 	 * some of our polymorphic requests as the calling function can tell us what
 	 * type of item is being requested.
 	 *

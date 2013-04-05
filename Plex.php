@@ -9,9 +9,9 @@
  * @category php-plex
  * @package Plex
  * @author <nickbart@gmail.com> Nick Bartkowiak
- * @copyright (c) 2012 Nick Bartkowiak
+ * @copyright (c) 2013 Nick Bartkowiak
  * @license http://www.gnu.org/licenses/gpl-3.0.html GNU Public Licence (GPLv3)
- * @version 0.0.1
+ * @version 0.0.2
  *
  * This file is part of php-plex.
  * 
@@ -28,6 +28,8 @@
 
 $phpPlexDir = dirname(__FILE__);
 
+require_once(sprintf('%s/Exception/ExceptionInterface.php', $phpPlexDir));
+require_once(sprintf('%s/Exception/ExceptionAbstract.php', $phpPlexDir));
 require_once(sprintf('%s/Machine/MachineInterface.php', $phpPlexDir));
 require_once(sprintf('%s/Machine/MachineAbstract.php', $phpPlexDir));
 require_once(sprintf('%s/Server.php', $phpPlexDir));

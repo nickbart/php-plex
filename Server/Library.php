@@ -7,9 +7,9 @@
  * @package Plex_Server
  * @subpackage Plex_Server_Library
  * @author <nickbart@gmail.com> Nick Bartkowiak
- * @copyright (c) 2012 Nick Bartkowiak
+ * @copyright (c) 2013 Nick Bartkowiak
  * @license http://www.gnu.org/licenses/gpl-3.0.html GNU Public Licence (GPLv3)
- * @version 0.0.1
+ * @version 0.0.2
  *
  * This file is part of php-plex.
  * 
@@ -32,9 +32,9 @@
  * @package Plex_Server
  * @subpackage Plex_Server_Library
  * @author <nickbart@gmail.com> Nick Bartkowiak
- * @copyright (c) 2012 Nick Bartkowiak
+ * @copyright (c) 2013 Nick Bartkowiak
  * @license http://www.gnu.org/licenses/gpl-3.0.html GNU Public Licence (GPLv3)
- * @version 0.0.1
+ * @version 0.0.2
  */
 class Plex_Server_Library extends Plex_Server
 {
@@ -258,6 +258,8 @@ class Plex_Server_Library extends Plex_Server
 	 * @uses Plex_Server_Library_Section::getKey()
 	 *
 	 * @return Plex_Server_Library_Section The request library section.
+	 *
+	 * @throws Plex_Exception_Server_Library()
 	 */
 	public function getSectionByKey($key)
 	{
@@ -266,6 +268,11 @@ class Plex_Server_Library extends Plex_Server
 				return $section;
 			}
 		}
+
+		throw new Plex_Exception_Server_Library(
+			'RESOURCE_NOT_FOUND',
+			array('section', $key)
+		);
 	}
 	
 	/**

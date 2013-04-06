@@ -28,12 +28,16 @@
 
 $phpPlexDir = dirname(__FILE__);
 
+// Exception
 require_once(sprintf('%s/Exception/ExceptionInterface.php', $phpPlexDir));
 require_once(sprintf('%s/Exception/ExceptionAbstract.php', $phpPlexDir));
 require_once(sprintf('%s/Exception/Machine.php', $phpPlexDir));
 require_once(sprintf('%s/Exception/Server.php', $phpPlexDir));
+require_once(sprintf('%s/Exception/Server/Library.php', $phpPlexDir));
+// Machine
 require_once(sprintf('%s/Machine/MachineInterface.php', $phpPlexDir));
 require_once(sprintf('%s/Machine/MachineAbstract.php', $phpPlexDir));
+// Server
 require_once(sprintf('%s/Server.php', $phpPlexDir));
 require_once(sprintf('%s/Server/Library.php', $phpPlexDir));
 require_once(sprintf('%s/Server/Library/SectionAbstract.php', $phpPlexDir));
@@ -53,6 +57,7 @@ require_once(sprintf('%s/Server/Library/Item/Episode.php', $phpPlexDir));
 require_once(sprintf('%s/Server/Library/Item/Artist.php', $phpPlexDir));
 require_once(sprintf('%s/Server/Library/Item/Album.php', $phpPlexDir));
 require_once(sprintf('%s/Server/Library/Item/Track.php', $phpPlexDir));
+// Client
 require_once(sprintf('%s/Client.php', $phpPlexDir));
 require_once(sprintf('%s/Client/ControllerAbstract.php', $phpPlexDir));
 require_once(sprintf('%s/Client/Controller/Navigation.php', $phpPlexDir));

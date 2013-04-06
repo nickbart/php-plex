@@ -7,9 +7,9 @@
  * @package Plex_Server
  * @subpackage Plex_Server_Library
  * @author <nickbart@gmail.com> Nick Bartkowiak
- * @copyright (c) 2012 Nick Bartkowiak
+ * @copyright (c) 2013 Nick Bartkowiak
  * @license http://www.gnu.org/licenses/gpl-3.0.html GNU Public Licence (GPLv3)
- * @version 0.0.1
+ * @version 0.0.2
  *
  * This file is part of php-plex.
  * 
@@ -33,9 +33,9 @@
  * @package Plex_Server
  * @subpackage Plex_Server_Library
  * @author <nickbart@gmail.com> Nick Bartkowiak
- * @copyright (c) 2012 Nick Bartkowiak
+ * @copyright (c) 2013 Nick Bartkowiak
  * @license http://www.gnu.org/licenses/gpl-3.0.html GNU Public Licence (GPLv3)
- * @version 0.0.1
+ * @version 0.0.2
  */
 abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 {
@@ -508,6 +508,9 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 	 * @param integer|string $polymorphicData Either a rating key, a key, or a
 	 * title for an exact title match that will be used to retrieve a single
 	 * library item.
+	 * @param boolean scopedToItem Tells the method whether or not we are
+	 * scoped to an item. If we are scoped to an item then we are use get
+	 * methods instead of search methods.
 	 *
 	 * @uses Plex_MachineAbstract::getCallingFunction()
 	 * @uses Plex_Server_Library::getItems()
@@ -519,12 +522,14 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 	 * @uses Plex_Server_Library_SectionAbstract::getPolymorphicItem()
 	 *
 	 * @return Plex_Server_Library_ItemAbstract The request Plex library item.
+	 *
+	 * @throws Plex_Exception_Server_Library()
 	 */
 	protected function getPolymorphicItem($polymorphicData, $scopedToItem = FALSE)
 	{
 		if (is_int($polymorphicData)) {
 			// If we have an integer then we can assume we have a rating key.
-			return reset(
+			if ($item = reset(
 				$this->getItems(
 					sprintf(
 						'%s/%d',
@@ -532,9 +537,17 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 						$polymorphicData
 					)
 				)
+			)) {
+				return $item;
+			}
+
+			throw new Plex_Exception_Server_Library(
+				'RESOURCE_NOT_FOUND',
+				array('item', $polymorphicData)
 			);
+
 		} else if (strpos($polymorphicData, Plex_Server_Library::ENDPOINT_METADATA)
-			!= FALSE) {
+			!== FALSE) {
 			// If the single item endpoint appears in the polymorphic data then
 			// is assumed we are dealing with a key, which is already a valid
 			// endpoint.
@@ -549,9 +562,16 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 				$polymorphicData
 			);
 			
-			return reset($this->getItems($endpoint));
+			if ($item = reset($this->getItems($endpoint))) {
+				return $item;
+			}
+
+			throw new Plex_Exception_Server_Library(
+				'RESOURCE_NOT_FOUND',
+				array('item', $polymorphicData)
+			);
+
 		} else {
-			
 			// If we don't have a rating key or a key then we just assume we're
 			// doing an exact title match.
 			
@@ -604,7 +624,10 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 			}
 			
 			// Tried to do an exact title match and came up empty.
-			return FALSE;
+			throw new Plex_Exception_Server_Library(
+				'RESOURCE_NOT_FOUND',
+				array('item', $polymorphicData)
+			);
 		}
 	}
 		

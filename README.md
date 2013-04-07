@@ -25,8 +25,6 @@ Playback is only implemented at the episode, movies, and track level. The plan i
 
 Paging has not been implemented for lists of items.
 
-There is no proper error handling, things just tend to fail silently. More explicit error handling will be added at a later date.
-
 Examples
 --------
 	

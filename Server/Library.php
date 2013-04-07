@@ -260,6 +260,9 @@ class Plex_Server_Library extends Plex_Server
 	 * @return Plex_Server_Library_Section The request library section.
 	 *
 	 * @throws Plex_Exception_Server_Library()
+	 *
+	 * @deprecated This method is deprectated in lieu of the new getSection()
+	 * method.
 	 */
 	public function getSectionByKey($key)
 	{
@@ -274,7 +277,48 @@ class Plex_Server_Library extends Plex_Server
 			array('section', $key)
 		);
 	}
-	
+
+	/**
+	 * Returns a Plex library section by its given key or by a exact match on
+	 * title. Here we simply run self::getSections() because the endpoint 
+	 * /library/sections/ID does not return full section data, it returns the
+	 * categories below the section.
+	 *
+	 * @param integer|string $polymorphicData The key or title of the requested 
+	 * section.
+	 *
+	 * @uses Plex_Server_Library::getSections()
+	 * @uses Plex_Server_Library_Section::getKey()
+ 	 * @uses Plex_Server_Library_Section::getTitle()
+	 *
+	 * @return Plex_Server_Library_Section The request library section.
+	 *
+	 * @throws Plex_Exception_Server_Library()
+	 */
+	public function getSection($polymorphicData)
+	{
+		// If we have an integer we are getting the section by key.
+		if (is_int($polymorphicData)) {
+			foreach ($this->getSections() as $section) {
+				if ($section->getKey() === $polymorphicData) {
+					return $section;
+				}
+			}
+		// If we have a string we are getting the section by title.
+		} else if (is_string($polymorphicData)) {
+			foreach ($this->getSections() as $section) {
+				if ($section->getTitle() === $polymorphicData) {
+					return $section;
+				}
+			}
+		}
+
+		throw new Plex_Exception_Server_Library(
+			'RESOURCE_NOT_FOUND',
+			array('section', $polymorphicData)
+		);
+	}
+		
 	/**
 	 * Returns the recently added items at the library level.
 	 *

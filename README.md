@@ -52,10 +52,9 @@ Get items at the library level
 	
 	// Sections
 	$server->getLibrary()->getSections();
-	$server->getLibrary()->getSectionByKey(1);
-	$server->getLibrary()->getSectionByKey(4);
-	$server->getLibrary()->getSectionByKey(5);
-	$server->getLibrary()->getSectionByKey(6);
+	$server->getLibrary()->getSection('Movies');
+	$server->getLibrary()->getSection('TV Shows');
+	$server->getLibrary()->getSection('Music');
 
 Movies
 	

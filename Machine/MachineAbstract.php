@@ -8,7 +8,7 @@
  * @author <nickbart@gmail.com> Nick Bartkowiak
  * @copyright (c) 2013 Nick Bartkowiak
  * @license http://www.gnu.org/licenses/gpl-3.0.html GNU Public Licence (GPLv3)
- * @version 0.0.2
+ * @version 0.0.2.5
  *
  * This file is part of php-plex.
  * 
@@ -32,7 +32,7 @@
  * @author <nickbart@gmail.com> Nick Bartkowiak
  * @copyright (c) 2012 Nick Bartkowiak
  * @license http://www.gnu.org/licenses/gpl-3.0.html GNU Public Licence (GPLv3)
- * @version 0.0.1
+ * @version 0.0.2.5
  */
 abstract class Plex_MachineAbstract implements Plex_MachineInterface
 {
@@ -81,25 +81,48 @@ abstract class Plex_MachineAbstract implements Plex_MachineInterface
 	 *
 	 * @param SimpleXMLElement $xmlNodes An XML node to have its attributes
 	 * converted to a useful PHP array.
+	 * @param integer $pass The number of recursive levels down the method has
+	 * run. This is mainly used for determining if we are on our first pass or
+	 * not because the data is picked up slightly differently on the first pass.
 	 * 
-	 * @todo Make this recursive.
+	 * @uses Plex_MachineAbstract::xmlAttributesToArray()
 	 *
 	 * @return array An associated array of XML attributes.
 	 */
-	protected function xmlAttributesToArray($xml)
+	protected function xmlAttributesToArray($xml, $pass = 0)
 	{
 		if (!$xml) return false;
 		
 		$array = array();
-		$i= 0;
-		foreach($xml as $node) {
-			foreach($node->attributes() as $key => $value) {
+		
+		// The first level of attributes are attributes about the request. To 
+		// date I haven't found an immediate need for them, so on pass 0 we just
+		// ignore those attributes and move straight on to the child elements.
+		if ($pass > 0) {
+			foreach($xml->attributes() as $key => $value) {
 				// For abstraction, everything is casted to string. It is the
 				// responsibility of the calling method to handle typing.
-				$array[$i][$key] = (string) $value[0];
+				$array[$key] = (string) $value[0];
 			}
-			$i++;
 		}
+		
+		foreach($xml->children() as $element => $child) {
+			if ($pass > 0) {
+				// If we are on our second pass then we start to cvare about the
+				// name of the elements. In this case we index them using it so
+				// we can get proper recursion.
+				$array[$element][] = $this->xmlAttributesToArray(
+					$child,
+					($pass+1)
+				);
+			} else {
+				// On our first pass, we don' care about the name of the 
+				// element. We only care about the attributes of each individual
+				// member of the element, so we just send it right through.
+				$array[] = $this->xmlAttributesToArray($child, ($pass+1));
+			}
+		}
+		
 		return $array;
 	}
 	

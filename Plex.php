@@ -45,6 +45,10 @@ require_once(sprintf('%s/Server/Library/Section/Movie.php', $phpPlexDir));
 require_once(sprintf('%s/Server/Library/Section/Show.php', $phpPlexDir));
 require_once(sprintf('%s/Server/Library/Section/Artist.php', $phpPlexDir));
 require_once(sprintf('%s/Server/Library/Section/Photo.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/Item/Media/File/FileInterface.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/Item/Media/File/File.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/Item/Media/MediaInterface.php', $phpPlexDir));
+require_once(sprintf('%s/Server/Library/Item/Media/Media.php', $phpPlexDir));
 require_once(sprintf('%s/Server/Library/ItemInterface.php', $phpPlexDir));
 require_once(sprintf('%s/Server/Library/ItemAbstract.php', $phpPlexDir));
 require_once(sprintf('%s/Server/Library/ItemGrandparentAbstract.php', $phpPlexDir));
@@ -72,7 +76,7 @@ require_once(sprintf('%s/Client/Controller/Application.php', $phpPlexDir));
  * @author <nickbart@gmail.com> Nick Bartkowiak
  * @copyright (c) 2013 Nick Bartkowiak
  * @license http://www.gnu.org/licenses/gpl-3.0.html GNU Public Licence (GPLv3)
- * @version 0.0.2
+ * @version 0.0.2.5
  */
 class Plex
 {

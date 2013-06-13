@@ -202,6 +202,23 @@ Artists, albums, and tracks
 	$trackByKey = $albumByExactTitleMatch->getTrack('/library/metadata/57726');
 	$trackByExactTitleMatch = $albumByExactTitleMatch->getTrack('Rewind');	
 
+Item Media Info
+
+	$showSection = $library->getSection('TV Shows');
+	$episode = $showSection->getShow("The Simpsons")
+		->getSeason(4)
+		->getEpisode(12);
+	
+	// Media Info
+	$media = $episode->getMedia();
+	$duration = $media->getDuration();
+	$bitrate = $media->getBitrate();
+	
+	// File
+	$file = $media->getFile();
+	$path = $file->getFile();
+	$size = $file->getSize();
+
 Playback Controller
 
 	$playback = $client->getPlaybackController();

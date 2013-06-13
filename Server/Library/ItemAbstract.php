@@ -9,7 +9,7 @@
  * @author <nickbart@gmail.com> Nick Bartkowiak
  * @copyright (c) 2012 Nick Bartkowiak
  * @license http://www.gnu.org/licenses/gpl-3.0.html GNU Public Licence (GPLv3)
- * @version 0.0.1
+ * @version 0.0.2.5
  *
  * This file is part of php-plex.
  * 
@@ -34,7 +34,7 @@
  * @author <nickbart@gmail.com> Nick Bartkowiak
  * @copyright (c) 2012 Nick Bartkowiak
  * @license http://www.gnu.org/licenses/gpl-3.0.html GNU Public Licence (GPLv3)
- * @version 0.0.1
+ * @version 0.0.2.5
  */
 abstract class Plex_Server_Library_ItemAbstract 
 	extends Plex_Server_Library_SectionAbstract
@@ -114,6 +114,12 @@ abstract class Plex_Server_Library_ItemAbstract
 	protected $updatedAt;
 	
 	/**
+	 * The media info associated with a Plex item.
+	 * @var Plex_Server_Library_Item_Media
+	 */
+	protected $media;
+	
+	/**
 	 * Endpoint for listing the child items of a parent or grandparent item.
 	 */
 	const ENDPOINT_CHILDREN = 'children';
@@ -142,6 +148,7 @@ abstract class Plex_Server_Library_ItemAbstract
 	 * @uses Plex_Server_Library_ItemAbstract::setThumb()
 	 * @uses Plex_Server_Library_ItemAbstract::setAddedAt()
 	 * @uses Plex_Server_Library_ItemAbstract::setUpdatedAt()
+	 * @uses Plex_Server_Library_ItemAbstract::setMedia()
 	 *
 	 * @return void
 	 */
@@ -182,6 +189,9 @@ abstract class Plex_Server_Library_ItemAbstract
 		}
 		if (isset($attribute['updatedAt'])) {
 			$this->setUpdatedAt($attribute['updatedAt']);
+		}
+		if (isset($attribute['Media'])) {
+			$this->setMedia($attribute['Media']);
 		}
 	}
 	
@@ -634,5 +644,34 @@ abstract class Plex_Server_Library_ItemAbstract
 	{
 		$updatedAt = new DateTime(sprintf('@%s', $updatedAtTs));
 		$this->updatedAt = $updatedAt;
+	}
+	
+	/**
+	 * Returns the media info of the item.
+	 *
+	 * @uses Plex_Server_Library_ItemAbstract::$media
+	 *
+	 * @return Plex_Server_Library_Item_Media THe media info of the item.
+	 */
+	public function getMedia()
+	{
+		return $this->media;
+	}
+	
+	/**
+	 * Sets the media info of the item.
+	 *
+	 * @uses Plex_Server_Library_Item_Media()
+	 * @uses Plex_Server_Library_ItemAbstract::$media
+	 *
+	 * @param string $media Raw media info that is to be converted into a media
+	 * info object.
+	 *
+	 * @return void
+	 */
+	public function setMedia($media)
+	{
+		$mediaObject = new Plex_Server_Library_Item_Media(reset($media));
+		$this->media = $mediaObject;
 	}
 }

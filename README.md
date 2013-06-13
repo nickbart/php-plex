@@ -215,7 +215,7 @@ Item Media Info
 	$bitrate = $media->getBitrate();
 	
 	// File
-	$file = $media->getFile();
+	$file = reset($media->getFile());
 	$path = $file->getFile();
 	$size = $file->getSize();
 

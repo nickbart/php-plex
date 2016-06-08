@@ -79,7 +79,29 @@ require_once(sprintf('%s/Client/Controller/Application.php', $phpPlexDir));
  * @version 0.0.2.5
  */
 class Plex
-{
+{	
+	protected Token;
+	public function getToken($username, $password) { 
+		$host = "https://plex.tv/users/sign_in.json"; 
+		$header = array( 
+			'Content-Type: application/xml; charset=utf-8', 
+			'Content-Length: 0', 
+			'X-Plex-Client-Identifier: 8334-8A72-4C28-FDAF-29AB-479E-4069-C3A3', 
+			'X-Plex-Product: PhpPlexAPI', 'X-Plex-Version: v1_00', );
+		$process = curl_init($host); 
+		curl_setopt($process, CURLOPT_HTTPHEADER, $header); 
+		curl_setopt($process, CURLOPT_HEADER, 0); 
+		curl_setopt($process, CURLOPT_HTTPAUTH, CURLAUTH_BASIC); 
+		curl_setopt($process, CURLOPT_USERPWD, $username . ":" . $password); 
+		curl_setopt($process, CURLOPT_TIMEOUT, 30); 
+		curl_setopt($process, CURLOPT_SSL_VERIFYPEER, 0); 
+		curl_setopt($process, CURLOPT_POST, 1); 
+		curl_setopt($process, CURLOPT_RETURNTRANSFER, true); 
+		$data = curl_exec($process); 
+		$curlError = curl_error($process); 
+		$json = json_decode($data, true);
+		$this->Token= $json['user']['authentication_token'];
+	}
 	/**
 	 * A list of Plex server machines on the network. This is defined by the 
 	 * instantiating software.

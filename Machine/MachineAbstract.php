@@ -138,6 +138,11 @@ abstract class Plex_MachineAbstract implements Plex_MachineInterface
 	 */
 	protected function makeCall($url)
 	{
+		if(stripos($url,'?')>0)
+			$url.='&';
+		else
+			$url.='?';
+		$url.= 'X-Plex-Token='.$this->Token;
 		$ch = curl_init();
 		
 		curl_setopt($ch, CURLOPT_URL, $url);

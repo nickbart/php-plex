@@ -106,10 +106,14 @@ class Plex
 	 * array (
 	 *     'server-1-name' => array(
 	 *         'address' => '192.168.1.5',
+	 *         'username' => 'username',
+	 *         'password' => 'password',
 	 *         'port' => 32400
 	 *     ),
 	 *     'server-2-name' => array(
 	 *         'address' => '192.168.1.10',
+	 *         'username' => 'email',
+	 *         'password' => 'password',
 	 *         'port' => 32400
 	 *     )
 	 * )
@@ -126,10 +130,12 @@ class Plex
 		// Register each server.
 		foreach ($servers as $name => $server) {
 			$port = isset($server['port']) ? $server['port'] : NULL;
+			$token = $this->getToken($server['username'], $server['password']);
 			self::$servers[$name] = new Plex_Server(
 				$name,
 				$server['address'],
-				$port
+				$port,
+				$token
 			);
 		}
 		
@@ -193,5 +199,37 @@ class Plex
 	public function getClient($clientName)
 	{
 		return self::$clients[$clientName];
+	}
+	
+	/**
+	 * Returns the token of the sesion plex
+	 *
+	 * @param string $username The username of the Plex server account.
+	 * @param string $password The password of the Plex server account.
+	 *
+	 * @uses Plex::$registerServers()
+	 *
+	 * @return string The token Plex account.
+	 */
+	public function getToken($username, $password) {
+		$host = "https://plex.tv/users/sign_in.json";
+		$header = array(
+			'Content-Type: application/xml; charset=utf-8',
+			'Content-Length: 0',
+			'X-Plex-Client-Identifier: 8334-8A72-4C28-FDAF-29AB-479E-4069-C3A3',
+			'X-Plex-Product: PhpPlexAPI', 'X-Plex-Version: v1_00', );
+		$process = curl_init($host);
+		curl_setopt($process, CURLOPT_HTTPHEADER, $header);
+		curl_setopt($process, CURLOPT_HEADER, 0);
+		curl_setopt($process, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+		curl_setopt($process, CURLOPT_USERPWD, $username . ":" . $password);
+		curl_setopt($process, CURLOPT_TIMEOUT, 30);
+		curl_setopt($process, CURLOPT_SSL_VERIFYPEER, 0);
+		curl_setopt($process, CURLOPT_POST, 1);
+		curl_setopt($process, CURLOPT_RETURNTRANSFER, true);
+		$data = curl_exec($process);
+		$curlError = curl_error($process);
+		$json = json_decode($data, true);
+		return $json['user']['authentication_token'];
 	}
 }

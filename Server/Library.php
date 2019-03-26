@@ -161,7 +161,8 @@ class Plex_Server_Library extends Plex_Server
 					$attribute['type'],
 					$this->name,
 					$this->address,
-					$this->port
+					$this->port,
+					$this->token
 				);
 				$item->setAttributes($attribute);
 				$items[] = $item;
@@ -237,7 +238,8 @@ class Plex_Server_Library extends Plex_Server
 				$attribute['type'],
 				$this->name,
 				$this->address,
-				$this->port
+				$this->port,
+				$this->token
 			);
 			$section->setAttributes($attribute);
 

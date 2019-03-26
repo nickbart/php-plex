@@ -330,14 +330,14 @@ abstract class Plex_Server_Library_ItemAbstract
 	 * @return Plex_Server_Library_ItemAbstract An instantiated item child
 	 * class.
 	 */
-	public static function factory($type, $name, $address, $port)
+	public static function factory($type, $name, $address, $port, $token)
 	{
 		$class = sprintf(
 			'Plex_Server_Library_Item_%s',
 			ucfirst($type)
 		);
 		
-		return new $class($name, $address, $port);
+		return new $class($name, $address, $port, $token);
 	}
 	
 	/**

@@ -135,7 +135,8 @@ class Plex
 		
 		// We are going to use the first server in the list to get a list of the
 		// availalble clients and register those automatically.
-		$serverName = reset(array_keys(self::$servers));
+		$serverKeys = array_keys(self::$servers);
+		$serverName = reset($serverKeys);
 		$this->registerClients(
 			$this->getServer($serverName)->getClients()
 		);

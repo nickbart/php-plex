@@ -529,15 +529,14 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 	{
 		if (is_int($polymorphicData)) {
 			// If we have an integer then we can assume we have a rating key.
-			if ($item = reset(
-				$this->getItems(
-					sprintf(
-						'%s/%d',
-						Plex_Server_Library::ENDPOINT_METADATA,
-						$polymorphicData
-					)
+			$item = $this->getItems(
+				sprintf(
+					'%s/%d',
+					Plex_Server_Library::ENDPOINT_METADATA,
+					$polymorphicData
 				)
-			)) {
+			);
+			if ($item = reset($item)) {
 				return $item;
 			}
 
@@ -562,7 +561,8 @@ abstract class Plex_Server_Library_SectionAbstract extends Plex_Server_Library
 				$polymorphicData
 			);
 			
-			if ($item = reset($this->getItems($endpoint))) {
+			$item = $this->getItems($endpoint);
+			if ($item = reset($item)) {
 				return $item;
 			}
 

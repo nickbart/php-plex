@@ -34,7 +34,9 @@ Set Up
 	
 	$servers = array(
 		'shepherd' => array(
-			'address' => '192.168.11.9'
+			'address' => '192.168.11.9',
+			'username' => 'username|email',
+            'password' => 'password'
 		)
 	);
 	
